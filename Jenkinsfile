@@ -40,13 +40,14 @@ pipeline {
         }
 
         stage('Run Docker Container') {
-            steps {
-                script {
-                    // Run the Docker container, mapping host IP and port 5060 to container port 5050
-                    sh "docker run -d --name ${CONTAINER_NAME} -p ${HOST_IP}:${HOST_PORT}:${CONTAINER_PORT} ${IMAGE_NAME}:${IMAGE_TAG}"
-                }
-            }
+    steps {
+        script {
+            // Run the Docker container, mapping host port 5060 to container port 5050
+            sh "docker run -d --name ${CONTAINER_NAME} -p 0.0.0.0:${HOST_PORT}:${CONTAINER_PORT} ${IMAGE_NAME}:${IMAGE_TAG}"
         }
+    }
+}
+
     }
 
     post {
