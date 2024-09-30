@@ -6,7 +6,7 @@ pipeline {
         IMAGE_TAG = 'latest'           // Docker image tag
         CONTAINER_NAME = 'youtube-clone-container'  // Name of the Docker container
         CONTAINER_PORT = '5050'        // Internal container port
-        HOST_PORT = '5060'             // External host port (mapped to 5050 inside the container)
+        HOST_PORT = '5050'             // External host port (mapped to 5050 inside the container)
         HOST_IP = '4.186.32.201'       // External VM IP address
     }
 
@@ -42,7 +42,7 @@ pipeline {
         stage('Run Docker Container') {
     steps {
         script {
-            // Run the Docker container, mapping host port 5060 to container port 5050
+            // Run the Docker container, mapping host port 5050 to container port 5050
             sh "docker run -d --name ${CONTAINER_NAME} -p 0.0.0.0:${HOST_PORT}:${CONTAINER_PORT} ${IMAGE_NAME}:${IMAGE_TAG}"
         }
     }
