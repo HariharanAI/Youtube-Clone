@@ -3,20 +3,20 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'youtube-clone'  // Name for your Docker image
-        IMAGE_TAG = 'latest'          // Docker image tag
+        IMAGE_TAG = 'latest'           // Docker image tag
         CONTAINER_NAME = 'youtube-clone-container'  // Name of the Docker container
-        CONTAINER_PORT = '5050'       // Internal container port
-        HOST_PORT = '5060'            // External host port (mapped to 5050 inside the container)
-        HOST_IP = '4.186.32.201'      // External VM IP address
+        CONTAINER_PORT = '5050'        // Internal container port
+        HOST_PORT = '5060'             // External host port (mapped to 5050 inside the container)
+        HOST_IP = '4.186.32.201'       // External VM IP address
     }
 
-
-     stage('Clone Repository') {
-    steps {
-        git credentialsId: 'your-credentials-id', branch: 'main', url: 'https://your-actual-repository-url.git'
-    }
-}
-    
+    stages {
+        stage('Clone Repository') {
+            steps {
+                // Clone the Git repository using the provided URL and credentials
+                git credentialsId: 'your-credentials-id', branch: 'main', url: 'https://github.com/HariharanAI/Youtube-Clone.git'
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
