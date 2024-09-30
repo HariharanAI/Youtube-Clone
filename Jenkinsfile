@@ -10,13 +10,13 @@ pipeline {
         HOST_IP = '4.186.32.201'      // External VM IP address
     }
 
-    stages {
-        stage('Clone Repository') {
-            steps {
-                // Clone the Git repository
-                git branch: 'main', url: 'https://your-repository-url.git'
-            }
-        }
+
+     stage('Clone Repository') {
+    steps {
+        git credentialsId: 'your-credentials-id', branch: 'main', url: 'https://your-actual-repository-url.git'
+    }
+}
+    
 
         stage('Build Docker Image') {
             steps {
