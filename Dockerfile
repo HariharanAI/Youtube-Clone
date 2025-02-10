@@ -1,17 +1,17 @@
-# Use the official Nginx image as the base image
+# Use Nginx Alpine as the base image
 FROM nginx:alpine
 
-# Copy your Nginx configuration file to the container
-COPY default.conf /etc/nginx/conf.d/default.conf
+# Set the working directory inside the container
+WORKDIR /usr/share/nginx/html
 
-# Copy the HTML, CSS, and JavaScript files to Nginx's default directory
-COPY yt.html /usr/share/nginx/html/index.html
-COPY yt.css /usr/share/nginx/html/yt.css
-COPY yt.js /usr/share/nginx/html/yt.js
+# Copy the HTML, CSS, and JavaScript files into the container
+COPY yt.html index.html
+COPY yt.css .
+COPY yt.js .
 
-# Expose port 5050
-EXPOSE 5050
+# Expose port 80 for the container
+EXPOSE 80
 
-# Start Nginx when the container starts
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
 
