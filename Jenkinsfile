@@ -4,7 +4,10 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/HariharanAI/Youtube-Clone.git'
+                script {
+                    cleanWs() // Clean workspace before checkout
+                    git branch: 'main', url: 'https://github.com/HariharanAI/Youtube-Clone.git'
+                }
             }
         }
 
@@ -14,7 +17,7 @@ pipeline {
                     sh '''
                     sudo rm -rf /var/www/html/youtube-clone
                     sudo mkdir -p /var/www/html/youtube-clone
-                    sudo cp -r Dockerfile Jenkinsfile yt.css yt.html yt.js /var/www/html/youtube-clone
+                    sudo cp -r * /var/www/html/youtube-clone
                     '''
                 }
             }
@@ -41,15 +44,18 @@ pipeline {
                         root /var/www/html/youtube-clone;
                         index yt.html;
                         location / {
-                            try_files \\$uri \\$uri/ =404;
+                            try_files $uri $uri/ =404;
                         }
                     }" | sudo tee /etc/nginx/sites-available/youtube-clone
 
                     # Enable the site
                     sudo ln -sf /etc/nginx/sites-available/youtube-clone /etc/nginx/sites-enabled/
 
-                    # Restart Nginx
-                    sudo systemctl restart nginx
+                    # Test Nginx Configuration
+                    sudo nginx -t
+
+                    # Reload Nginx if configuration is valid
+                    sudo systemctl reload nginx
                     '''
                 }
             }
@@ -58,10 +64,10 @@ pipeline {
 
     post {
         success {
-            echo "Deployment Successful! YouTube Clone is running on port 8081."
+            echo "✅ Deployment Successful! YouTube Clone is running on port 8081."
         }
         failure {
-            echo "Deployment Failed! Check logs."
+            echo "❌ Deployment Failed! Check logs."
         }
     }
 }
